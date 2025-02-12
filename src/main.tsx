@@ -4,8 +4,9 @@ import { RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext.tsx';
 import { MenuProvider } from './contexts/MenuContext.tsx';
 import { router } from './routes/router.tsx';
-import './index.css';
 import { ClerkProvider } from '@clerk/clerk-react'
+
+import './index.css';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 // console.log("🚀 ~ PUBLISHABLE_KEY:", PUBLISHABLE_KEY)
