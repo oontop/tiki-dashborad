@@ -1,9 +1,8 @@
-import axios from 'axios';
-import {config} from './config';
+import { config } from './config';
 
 interface PatientTimeTracking {
   id: string;
-  createdAt?: Date,
+  createdAt?: Date;
   userID: string;
   patientID: string;
   patientName: string;
@@ -22,9 +21,12 @@ interface PatientTimeTracking {
 const patientTimeTracking = {
   async getPatientTimeTracking(patientId: string): Promise<PatientTimeTracking> {
     try {
-      // use patient-info route
-      const response = await axios.get<PatientTimeTracking>(`${config.baseUrl}/patient-info/${patientId}`);
-      return response.data;
+      const response = await fetch(`${config.baseUrl}/patient-info/${patientId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data: PatientTimeTracking = await response.json();
+      return data;
     } catch (error) {
       console.error('Error fetching patient info:', error);
       throw error;

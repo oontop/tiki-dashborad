@@ -1,6 +1,4 @@
-
-import axios from 'axios';
-import {config} from './config';
+import { config } from './config';
 
 // types
 export enum MeetingType {
@@ -47,7 +45,7 @@ export interface Meeting {
     startDate?: Date;
     endDate?: Date;
     totalTime?: number;
-    platform: ScrapperPlatform
+    platform: ScrapperPlatform;
     platformUrl: string;
     platformId: string;
 }
@@ -58,16 +56,24 @@ export interface MeetingComment {
     note?: string;
 }
 
-
 const meetingService = {
     async meetingFilterByDates(registrationByUserId: string, startDate: Date, endDate: Date): Promise<Meeting[]> {
         try {
-            const response = await axios.post<Meeting[]>(`${config.baseUrl}/meeting/filter/dates`, {
-                registrationByUserId, 
-                startDate, 
-                endDate
+            const response = await fetch(`${config.baseUrl}/meeting/filter/dates`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrationByUserId,
+                    startDate,
+                    endDate,
+                }),
             });
-            return response.data;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
         } catch (error) {
             console.error('Error fetching meetings:', error);
             throw error;
@@ -75,11 +81,20 @@ const meetingService = {
     },
     async meetingFilterByPatientId(registrationByUserId: string, internalPlatformPatientId: string): Promise<Meeting[]> {
         try {
-            const response = await axios.post<Meeting[]>(`${config.baseUrl}/meeting/filter/patient-id`, {
-                registrationByUserId,
-                internalPlatformPatientId
+            const response = await fetch(`${config.baseUrl}/meeting/filter/patient-id`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrationByUserId,
+                    internalPlatformPatientId,
+                }),
             });
-            return response.data;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
         } catch (error) {
             console.error('Error fetching meetings:', error);
             throw error;
@@ -87,13 +102,22 @@ const meetingService = {
     },
     async meetingFilterByPatientIdAndDates(registrationByUserId: string, patientName: string, startDate: Date, endDate: Date): Promise<Meeting[]> {
         try {
-            const response = await axios.post<Meeting[]>(`${config.baseUrl}/meeting/filter/patient-dates`, {
-                registrationByUserId,
-                patientName,
-                startDate,
-                endDate
+            const response = await fetch(`${config.baseUrl}/meeting/filter/patient-dates`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrationByUserId,
+                    patientName,
+                    startDate,
+                    endDate,
+                }),
             });
-            return response.data;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
         } catch (error) {
             console.error('Error fetching meetings:', error);
             throw error;
@@ -101,11 +125,20 @@ const meetingService = {
     },
     async meetingFilterByPatientName(registrationByUserId: string, patientName: string): Promise<Meeting[]> {
         try {
-            const response = await axios.post<Meeting[]>(`${config.baseUrl}/meeting/filter/patient-name`, {
-                registrationByUserId,
-                patientName,
+            const response = await fetch(`${config.baseUrl}/meeting/filter/patient-name`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    registrationByUserId,
+                    patientName,
+                }),
             });
-            return response.data;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
         } catch (error) {
             console.error('Error fetching meetings:', error);
             throw error;
@@ -113,18 +146,27 @@ const meetingService = {
     },
     async meetingsToCSV(meetings: Meeting[], name: string, startDate: Date, endDate: Date): Promise<any> {
         try {
-            const response = await axios.post<Meeting[]>(`${config.baseUrl}/meeting/csv`, {
-                meetings,
-                name,
-                startDate,
-                endDate 
+            const response = await fetch(`${config.baseUrl}/meeting/csv`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    meetings,
+                    name,
+                    startDate,
+                    endDate,
+                }),
             });
-            return response.data;
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return await response.json();
         } catch (error) {
             console.error('Error exporting meetings to CSV:', error);
             throw error;
         }
     }
 };
-  
+
 export default meetingService;

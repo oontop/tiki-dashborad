@@ -1,9 +1,8 @@
-import axios from 'axios';
-import {config} from './config';
+import { config } from './config';
 
 interface PatientInfo {
   id: string;
-  createdAt?: Date,
+  createdAt?: Date;
   name?: string;
   organizationId?: string;
   gender?: string;
@@ -21,9 +20,12 @@ interface PatientInfo {
 const patientInfo = {
   async getPatientInfo(patientId: string): Promise<PatientInfo> {
     try {
-      // use patient-info
-      const response = await axios.get<PatientInfo>(`${config.baseUrl}/patient-info/${patientId}`);
-      return response.data;
+      const response = await fetch(`${config.baseUrl}/patient-info/${patientId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data: PatientInfo = await response.json();
+      return data;
     } catch (error) {
       console.error('Error fetching patient info:', error);
       throw error;
